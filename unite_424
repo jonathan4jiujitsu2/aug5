@@ -1,0 +1,12 @@
+' After all sweeps are completed
+Dim sweptSolids
+sweptSolids = Array( _
+  "Seg_Wio", "Seg_Line1", "Seg_Line2", "Seg_Line3", "Seg_Line4", _
+  "Seg_Line5", "Seg_Line6", "Seg_Line7", "Seg_Line8", "Seg_Line9", _
+  "Seg_Line10", "Seg_Line11", "Seg_Line12", "Seg_Line13", "Seg_Line14", _
+  "Seg_Line15", "Seg_Launch")
+
+Call oEditor.Unite( _
+  Array("NAME:Selections", "Selections:=", Join(sweptSolids, ",")), _
+  Array("NAME:UniteParameters", "KeepOriginals:=", false) _
+)
