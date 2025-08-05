@@ -152,3 +152,109 @@ Call oEditor.CreatePolyline( _
     "MaterialValue:=", material, _
     "SolveInside:=", false) _
 )
+
+
+
+' Segment 5: Long vertical resonator section
+Dim y5
+y5 = y4 + L5
+
+Call oEditor.CreatePolyline( _
+  Array("NAME:PolylineParameters", _
+    "IsPolylineCovered:=", true, _
+    "IsPolylineClosed:=", false, _
+    Array("NAME:PolylinePoints", _
+      Array("NAME:PLPoint", "X:=", CStr(x3) & "mil", "Y:=", CStr(y4) & "mil", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", CStr(x3) & "mil", "Y:=", CStr(y5) & "mil", "Z:=", "0mil") _
+    ), _
+    Array("NAME:PolylineSegments", _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 0, "NoOfPoints:=", 2) _
+    ), _
+    Array("NAME:PolylineXSection", _
+      "XSectionType:=", "None", _
+      "XSectionOrient:=", "Auto", _
+      "XSectionWidth:=", "0mil", _
+      "XSectionTopWidth:=", "0mil", _
+      "XSectionHeight:=", "0mil", _
+      "XSectionNumSegments:=", "0", _
+      "XSectionBendType:=", "Corner") _
+  ), _
+  Array("NAME:Attributes", _
+    "Name:=", "Seg5_VertLong", _
+    "Flags:=", "", _
+    "Color:=", "(0 255 255)", _
+    "Transparency:=", transparency, _
+    "PartCoordinateSystem:=", "Global", _
+    "MaterialValue:=", material, _
+    "SolveInside:=", false) _
+)
+
+' Segment 6: Short vertical section at the turn
+Dim y6
+y6 = y5 + L6
+
+Call oEditor.CreatePolyline( _
+  Array("NAME:PolylineParameters", _
+    "IsPolylineCovered:=", true, _
+    "IsPolylineClosed:=", false, _
+    Array("NAME:PolylinePoints", _
+      Array("NAME:PLPoint", "X:=", CStr(x3) & "mil", "Y:=", CStr(y5) & "mil", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", CStr(x3) & "mil", "Y:=", CStr(y6) & "mil", "Z:=", "0mil") _
+    ), _
+    Array("NAME:PolylineSegments", _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 0, "NoOfPoints:=", 2) _
+    ), _
+    Array("NAME:PolylineXSection", _
+      "XSectionType:=", "None", _
+      "XSectionOrient:=", "Auto", _
+      "XSectionWidth:=", "0mil", _
+      "XSectionTopWidth:=", "0mil", _
+      "XSectionHeight:=", "0mil", _
+      "XSectionNumSegments:=", "0", _
+      "XSectionBendType:=", "Corner") _
+  ), _
+  Array("NAME:Attributes", _
+    "Name:=", "Seg6_ShortVert", _
+    "Flags:=", "", _
+    "Color:=", "(255 0 255)", _
+    "Transparency:=", transparency, _
+    "PartCoordinateSystem:=", "Global", _
+    "MaterialValue:=", material, _
+    "SolveInside:=", false) _
+)
+
+' Segment 7: Angled section (30° to the right)
+Dim x7, y7
+x7 = x3 + L7 * 0.866  ' cos(30°)
+y7 = y6 + L7 * 0.5    ' sin(30°)
+
+Call oEditor.CreatePolyline( _
+  Array("NAME:PolylineParameters", _
+    "IsPolylineCovered:=", true, _
+    "IsPolylineClosed:=", false, _
+    Array("NAME:PolylinePoints", _
+      Array("NAME:PLPoint", "X:=", CStr(x3) & "mil", "Y:=", CStr(y6) & "mil", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", CStr(x7) & "mil", "Y:=", CStr(y7) & "mil", "Z:=", "0mil") _
+    ), _
+    Array("NAME:PolylineSegments", _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 0, "NoOfPoints:=", 2) _
+    ), _
+    Array("NAME:PolylineXSection", _
+      "XSectionType:=", "None", _
+      "XSectionOrient:=", "Auto", _
+      "XSectionWidth:=", "0mil", _
+      "XSectionTopWidth:=", "0mil", _
+      "XSectionHeight:=", "0mil", _
+      "XSectionNumSegments:=", "0", _
+      "XSectionBendType:=", "Corner") _
+  ), _
+  Array("NAME:Attributes", _
+    "Name:=", "Seg7_Angled30", _
+    "Flags:=", "", _
+    "Color:=", "(128 0 255)", _
+    "Transparency:=", transparency, _
+    "PartCoordinateSystem:=", "Global", _
+    "MaterialValue:=", material, _
+    "SolveInside:=", false) _
+)
+
