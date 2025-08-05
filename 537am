@@ -1,0 +1,162 @@
+' Full Hairpin Filter Geometry with Swept 3D Solids
+
+' =====================
+' Initialize dimensions
+' =====================
+Dim Wio, L1, L2, L3, L4, L5, L6, L7, L9, L10, L11, L12, L13, L14, L15
+Dim line_width, thickness
+
+Wio = 7.0
+L1 = 50
+L2 = 51
+L3 = 26.28
+L4 = 20.48
+L5 = 103.36
+L6 = 100.26
+L7 = 14.3378
+L9 = 2.65
+L10 = 8.58
+L11 = 45.118
+L12 = 28
+L13 = 55
+L14 = 133
+L15 = 108
+
+line_width = 2
+thickness = 0.65
+
+' =====================
+' Initialize HFSS project
+' =====================
+Dim oAnsoftApp, oDesktop, oProject, oDesign, oEditor
+Set oAnsoftApp = CreateObject("AnsoftHfss.HfssScriptInterface")
+Set oDesktop = oAnsoftApp.GetAppDesktop()
+oDesktop.RestoreWindow
+Set oProject = oDesktop.NewProject
+Set oDesign = oProject.InsertDesign("HFSS", "HairpinFilter", "DrivenModal", "")
+Set oEditor = oDesign.SetActiveEditor("3D Modeler")
+
+' =====================
+' Create rectangular cross-section to sweep
+' =====================
+Call oEditor.CreateRectangle( _
+  Array("NAME:RectangleParameters", _
+    "IsCovered:=", true, _
+    "XStart:=", "0mil", _
+    "YStart:=", "0mil", _
+    "ZStart:=", "0mil", _
+    "Width:=", CStr(line_width) & "mil", _
+    "Height:=", CStr(thickness) & "mil", _
+    "WhichAxis:=", "Z"), _
+  Array("NAME:Attributes", _
+    "Name:=", "CrossSection", _
+    "Flags:=", "", _
+    "Color:=", "(255 0 0)", _
+    "Transparency:=", 0, _
+    "PartCoordinateSystem:=", "Global", _
+    "MaterialValue:=", Chr(34) & "copper" & Chr(34), _
+    "SolveInside:=", false))
+
+' =====================
+' Calculate hairpin outline points
+' =====================
+Dim x3, y3, x4, y4, x5, y5, x6, y6, x7, y7, x8, y8, x9, y9, x10, y10, x11, y11
+x3 = L1 + L3 * 0.7071
+y3 = L3 * 0.7071
+x4 = L1 + L4 * 0.7071
+y4 = Wio + L4 * 0.7071
+x5 = x3: y5 = y3 + L5
+x6 = x4: y6 = y4 + L6
+x7 = x6 - L7 * 0.7071: y7 = y6 + L7 * 0.7071
+x8 = x5 + L7 * 0.7071: y8 = y5 + L7 * 0.7071
+x9 = x8: y9 = y8 + L9
+x10 = x7: y10 = y7 + L10
+x11 = x9 + L11: y11 = y9
+Dim x12, y12, x13, y13, x14, y14, x15, y15, x16, y16
+x12 = x10 + L12 * 0.7071: y12 = y10 + L12 * 0.7071
+x13 = x12 + L13: y13 = y12
+x14 = x13: y14 = y11 - L15
+x15 = x11: y15 = y11 - L15
+x16 = x15 + 3.9: y16 = y15
+
+' =====================
+' Create full polyline path
+' =====================
+Call oEditor.CreatePolyline( _
+  Array("NAME:PolylineParameters", _
+    "IsPolylineCovered:=", false, _
+    "IsPolylineClosed:=", false, _
+    Array("NAME:PolylinePoints", _
+      Array("NAME:PLPoint", "X:=", "0mil", "Y:=", "0mil", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", "0mil", "Y:=", CStr(Wio) & "mil", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", CStr(L1) & "mil", "Y:=", CStr(Wio) & "mil", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", CStr(L1) & "mil", "Y:=", "0mil", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", CStr(x3) & "mil", "Y:=", CStr(y3) & "mil", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", CStr(x4) & "mil", "Y:=", CStr(y4) & "mil", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", CStr(x5) & "mil", "Y:=", CStr(y5) & "mil", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", CStr(x6) & "mil", "Y:=", CStr(y6) & "mil", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", CStr(x7) & "mil", "Y:=", CStr(y7) & "mil", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", CStr(x8) & "mil", "Y:=", CStr(y8) & "mil", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", CStr(x9) & "mil", "Y:=", CStr(y9) & "mil", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", CStr(x10) & "mil", "Y:=", CStr(y10) & "mil", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", CStr(x11) & "mil", "Y:=", CStr(y11) & "mil", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", CStr(x12) & "mil", "Y:=", CStr(y12) & "mil", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", CStr(x13) & "mil", "Y:=", CStr(y13) & "mil", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", CStr(x14) & "mil", "Y:=", CStr(y14) & "mil", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", CStr(x15) & "mil", "Y:=", CStr(y15) & "mil", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", CStr(x16) & "mil", "Y:=", CStr(y16) & "mil", "Z:=", "0mil") _
+    ), _
+    Array("NAME:PolylineSegments", _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 0, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 1, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 2, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 3, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 4, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 5, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 6, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 7, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 8, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 9, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 10, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 11, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 12, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 13, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 14, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 15, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 16, "NoOfPoints:=", 2) _
+    ), _
+    Array("NAME:PolylineXSection", _
+      "XSectionType:=", "None", _
+      "XSectionOrient:=", "Auto", _
+      "XSectionWidth:=", "0", _
+      "XSectionTopWidth:=", "0", _
+      "XSectionHeight:=", "0", _
+      "XSectionNumSegments:=", "0", _
+      "XSectionBendType:=", "Corner") _
+  ), _
+  Array("NAME:Attributes", _
+    "Name:=", "HairpinPath", _
+    "Flags:=", "", _
+    "Color:=", "(0 255 0)", _
+    "Transparency:=", 0, _
+    "PartCoordinateSystem:=", "Global", _
+    "MaterialValue:=", Chr(34) & "copper" & Chr(34), _
+    "SolveInside:=", false))
+
+' =====================
+' Sweep the cross-section along the path
+' =====================
+Call oEditor.SweepAlongPath( _
+  Array("NAME:Selections", _
+    "Selections:=", "CrossSection", _
+    "NewPartsModelFlag:=", "Model"), _
+  Array("NAME:PathSweepParameters", _
+    "DraftAngle:=", "0deg", _
+    "DraftType:=", "Round", _
+    "CheckFaceIntersection:=", false, _
+    "TwistAngle:=", "0deg", _
+    "AdvanceAngle:=", "0deg", _
+    "Path:=", "HairpinPath", _
+    "SweepAxis:=", "Z", _
+    "ScaleAlongPath:=", false, _
+    "Anchor:=", "Start"))
