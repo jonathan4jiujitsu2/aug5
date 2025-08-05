@@ -1,0 +1,22 @@
+' Sweep all segments into 3D along Z-direction
+Dim linesToSweep
+linesToSweep = Array( _
+  "Seg_Wio", "Seg_Line1", "Seg_Line2", "Seg_Line3", "Seg_Line4", _
+  "Seg_Line5", "Seg_Line6", "Seg_Line7", "Seg_Line8", "Seg_Line9", _
+  "Seg_Line10", "Seg_Line11", "Seg_Line12", "Seg_Line13", "Seg_Line14", _
+  "Seg_Line15", "Seg_Launch")
+
+For Each name In linesToSweep
+  Call oEditor.SweepAlongVector( _
+    Array("NAME:Selections", _
+      "Selections:=" , name, _
+      "NewPartsModelFlag:=" , "Model"), _
+    Array("NAME:VectorSweepParameters", _
+      "DraftAngle:=" , "0deg", _
+      "DraftType:=" , "Round", _
+      "CheckFaceIntersection:=" , false, _
+      "SweepVectorX:=" , "0mil", _
+      "SweepVectorY:=" , "0mil", _
+      "SweepVectorZ:=" , "0.65mil") _
+  )
+Next
