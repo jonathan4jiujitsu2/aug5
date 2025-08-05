@@ -97,3 +97,61 @@ Call oEditor.CreatePolyline( _
   Array("NAME:Attributes", "Name:=", "Seg_Line3", "Flags:=", "", "Color:=", "(255 0 255)", _
     "Transparency:=", transparency, "PartCoordinateSystem:=", "Global", "MaterialValue:=", material, "SolveInside:=", false) _
 )
+
+
+
+
+
+' Updated dimensions
+Wio = 7.0
+L1 = 50
+L2 = 51
+L3 = 26.28
+L4 = 20.48
+L5 = 103.36
+L6 = 106.26
+
+Dim x3, y3, x4, y4
+x3 = L1 + L3 * 0.707
+y3 = L3 * 0.707
+x4 = L1 + L4 * 0.707
+y4 = Wio + L4 * 0.707
+
+' -------- Segment: Line5 (vertical up from Line3 end) --------
+Dim y5
+y5 = y3 + L5
+
+Call oEditor.CreatePolyline( _
+  Array("NAME:PolylineParameters", _
+    "IsPolylineCovered:=", true, "IsPolylineClosed:=", false, _
+    Array("NAME:PolylinePoints", _
+      Array("NAME:PLPoint", "X:=", CStr(x3) & "mil", "Y:=", CStr(y3) & "mil", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", CStr(x3) & "mil", "Y:=", CStr(y5) & "mil", "Z:=", "0mil") _
+    ), _
+    Array("NAME:PolylineSegments", Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 0, "NoOfPoints:=", 2)), _
+    Array("NAME:PolylineXSection", "XSectionType:=", "None", "XSectionOrient:=", "Auto", "XSectionWidth:=", "0mil", _
+      "XSectionTopWidth:=", "0mil", "XSectionHeight:=", "0mil", "XSectionNumSegments:=", "0", "XSectionBendType:=", "Corner") _
+  ), _
+  Array("NAME:Attributes", "Name:=", "Seg_Line5", "Flags:=", "", "Color:=", "(255 255 0)", _
+    "Transparency:=", transparency, "PartCoordinateSystem:=", "Global", "MaterialValue:=", material, "SolveInside:=", false) _
+)
+
+' -------- Segment: Line6 (vertical up from Line4 end) --------
+Dim y6
+y6 = y4 + L6
+
+Call oEditor.CreatePolyline( _
+  Array("NAME:PolylineParameters", _
+    "IsPolylineCovered:=", true, "IsPolylineClosed:=", false, _
+    Array("NAME:PolylinePoints", _
+      Array("NAME:PLPoint", "X:=", CStr(x4) & "mil", "Y:=", CStr(y4) & "mil", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", CStr(x4) & "mil", "Y:=", CStr(y6) & "mil", "Z:=", "0mil") _
+    ), _
+    Array("NAME:PolylineSegments", Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 0, "NoOfPoints:=", 2)), _
+    Array("NAME:PolylineXSection", "XSectionType:=", "None", "XSectionOrient:=", "Auto", "XSectionWidth:=", "0mil", _
+      "XSectionTopWidth:=", "0mil", "XSectionHeight:=", "0mil", "XSectionNumSegments:=", "0", "XSectionBendType:=", "Corner") _
+  ), _
+  Array("NAME:Attributes", "Name:=", "Seg_Line6", "Flags:=", "", "Color:=", "(0 255 255)", _
+    "Transparency:=", transparency, "PartCoordinateSystem:=", "Global", "MaterialValue:=", material, "SolveInside:=", false) _
+)
+
