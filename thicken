@@ -1,0 +1,7 @@
+Call oEditor.ThickenSheet( _
+  Array("NAME:Selections", "Selections:=", "<YourSweptShape>"), _
+  Array("NAME:ThickenSheetParameters", _
+    "Thickness:=", "0.65mil", _
+    "BothSides:=", false, _
+    "ReplaceSheet:=", true) _
+)
