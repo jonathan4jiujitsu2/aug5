@@ -1,0 +1,125 @@
+' Full Hairpin Filter Geometry with Swept 3D Solids
+
+' =====================
+' Initialize dimensions
+' =====================
+Dim Wio, L1, L2, L3, L4, L5, L6, L7, L9, L10, L11, L12, L13, L14, L15
+Dim line_width, thickness
+
+Wio = 7.0
+L1 = 50
+L2 = 51
+L3 = 26.28
+L4 = 20.48
+L5 = 103.36
+L6 = 100.26
+L7 = 14.3378
+L9 = 2.65
+L10 = 8.58
+L11 = 45.118
+L12 = 28
+L13 = 55
+L14 = 133
+L15 = 108
+
+line_width = 2
+thickness = 0.65
+
+' =====================
+' Create all polylines for the hairpin structure
+' =====================
+Dim oAnsoftApp, oDesktop, oProject, oDesign, oEditor
+Set oAnsoftApp = CreateObject("AnsoftHfss.HfssScriptInterface")
+Set oDesktop = oAnsoftApp.GetAppDesktop()
+oDesktop.RestoreWindow
+Set oProject = oDesktop.NewProject
+Set oDesign = oProject.InsertDesign("HFSS", "HairpinFilter", "DrivenModal", "")
+Set oEditor = oDesign.SetActiveEditor("3D Modeler")
+
+' Calculate important points used across segments
+Dim x3, y3, x4, y4, x5, y5, x6, y6, x7, y7, x8, y8, x9, y9, x10, y10, x11, y11
+x3 = L1 + L3 * 0.7071
+y3 = L3 * 0.7071
+x4 = L1 + L4 * 0.7071
+y4 = Wio + L4 * 0.7071
+x5 = x3: y5 = y3 + L5
+x6 = x4: y6 = y4 + L6
+x7 = x6 - L7 * 0.7071: y7 = y6 + L7 * 0.7071
+x8 = x5 + L7 * 0.7071: y8 = y5 + L7 * 0.7071
+x9 = x8: y9 = y8 + L9
+x10 = x7: y10 = y7 + L10
+x11 = x9 + L11: y11 = y9
+
+Sub CreateSegment(name, x1, y1, x2, y2, color)
+  Call oEditor.CreatePolyline( _
+    Array("NAME:PolylineParameters", _
+      "IsPolylineCovered:=" , true, _
+      "IsPolylineClosed:=" , false, _
+      Array("NAME:PolylinePoints", _
+        Array("NAME:PLPoint", "X:=" , CStr(x1) & "mil", "Y:=" , CStr(y1) & "mil", "Z:=" , "0mil"), _
+        Array("NAME:PLPoint", "X:=" , CStr(x2) & "mil", "Y:=" , CStr(y2) & "mil", "Z:=" , "0mil") _
+      ), _
+      Array("NAME:PolylineSegments", _
+        Array("NAME:PLSegment", "SegmentType:=" , "Line", "StartIndex:=" , 0, "NoOfPoints:=" , 2) _
+      ), _
+      Array("NAME:PolylineXSection", _
+        "XSectionType:=" , "None", _
+        "XSectionOrient:=" , "Auto", _
+        "XSectionWidth:=" , "0", _
+        "XSectionTopWidth:=" , "0", _
+        "XSectionHeight:=" , "0", _
+        "XSectionNumSegments:=" , "0", _
+        "XSectionBendType:=" , "Corner") _
+    ), _
+    Array("NAME:Attributes", _
+      "Name:=" , name, _
+      "Flags:=" , "", _
+      "Color:=" , color, _
+      "Transparency:=" , 0, _
+      "PartCoordinateSystem:=" , "Global", _
+      "MaterialValue:=" , Chr(34) & "copper" & Chr(34), _
+      "SolveInside:=" , false) _
+  )
+End Sub
+
+CreateSegment "Seg_Wio", 0, 0, 0, Wio, "(255 0 0)"
+CreateSegment "Seg_Line1", 0, Wio, L1, Wio, "(0 255 0)"
+CreateSegment "Seg_Line2", 0, 0, L1, 0, "(0 0 255)"
+CreateSegment "Seg_Line3", L1, 0, x3, y3, "(255 128 0)"
+CreateSegment "Seg_Line4", L1, Wio, x4, y4, "(128 0 255)"
+CreateSegment "Seg_Line5", x3, y3, x5, y5, "(255 0 255)"
+CreateSegment "Seg_Line6", x4, y4, x6, y6, "(0 255 255)"
+CreateSegment "Seg_Line7", x6, y6, x7, y7, "(255 200 0)"
+CreateSegment "Seg_Line8", x5, y5, x8, y8, "(0 255 128)"
+CreateSegment "Seg_Line9", x8, y8, x9, y9, "(255 128 128)"
+CreateSegment "Seg_Line10", x7, y7, x10, y10, "(128 128 255)"
+CreateSegment "Seg_Line11", x9, y9, x11, y11, "(255 0 100)"
+CreateSegment "Seg_Line12", x10, y10, x10 + L12 * 0.7071, y10 + L12 * 0.7071, "(0 255 200)"
+CreateSegment "Seg_Line13", x10 + L12 * 0.7071, y10 + L12 * 0.7071, x10 + L12 * 0.7071 + L13, y10 + L12 * 0.7071, "(128 255 0)"
+CreateSegment "Seg_Line14", x10 + L12 * 0.7071 + L13, y10 + L12 * 0.7071, x10 + L12 * 0.7071 + L13, y11 - L15, "(0 255 0)"
+CreateSegment "Seg_Line15", x11, y11, x11, y11 - L15, "(255 0 200)"
+CreateSegment "Seg_Launch", x11, y11 - L15, x10 + L12 * 0.7071 + L13, y11 - L15, "(255 128 0)"
+
+' =====================
+' Cover and Sweep to 3D
+' =====================
+Dim linesToSweep
+linesToSweep = Array( _
+  "Seg_Wio", "Seg_Line1", "Seg_Line2", "Seg_Line3", "Seg_Line4", _
+  "Seg_Line5", "Seg_Line6", "Seg_Line7", "Seg_Line8", "Seg_Line9", _
+  "Seg_Line10", "Seg_Line11", "Seg_Line12", "Seg_Line13", "Seg_Line14", _
+  "Seg_Line15", "Seg_Launch")
+
+For Each name In linesToSweep
+  Call oEditor.CoverLines(Array("NAME:Selections", "Selections:=", name), _
+    Array("NAME:CoverLinesParameters", "Replace:=", true))
+
+  Call oEditor.SweepAlongVector(Array("NAME:Selections", "Selections:=", name, "NewPartsModelFlag:=", "Model"), _
+    Array("NAME:VectorSweepParameters", _
+      "DraftAngle:=", "0deg", _
+      "DraftType:=", "Round", _
+      "CheckFaceIntersection:=", false, _
+      "SweepVectorX:=", "0mil", _
+      "SweepVectorY:=", "0mil", _
+      "SweepVectorZ:=", CStr(thickness) & "mil"))
+Next
