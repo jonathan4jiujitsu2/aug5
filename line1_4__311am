@@ -250,3 +250,54 @@ Call oEditor.CreatePolyline( _
   Array("NAME:Attributes", "Name:=", "Seg_Line9", "Flags:=", "", "Color:=", "(0 128 255)", _
     "Transparency:=", transparency, "PartCoordinateSystem:=", "Global", "MaterialValue:=", material, "SolveInside:=", false) _
 )
+
+
+
+
+
+
+
+' -------- Segment: Line11 (horizontal from Line9 end) --------
+Dim L11, x11_start, y11_start, x11_end
+L11 = 45.118
+x11_start = x9
+y11_start = y9_end
+x11_end = x11_start + L11
+
+Call oEditor.CreatePolyline( _
+  Array("NAME:PolylineParameters", _
+    "IsPolylineCovered:=", true, "IsPolylineClosed:=", false, _
+    Array("NAME:PolylinePoints", _
+      Array("NAME:PLPoint", "X:=", CStr(x11_start) & "mil", "Y:=", CStr(y11_start) & "mil", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", CStr(x11_end) & "mil", "Y:=", CStr(y11_start) & "mil", "Z:=", "0mil") _
+    ), _
+    Array("NAME:PolylineSegments", Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 0, "NoOfPoints:=", 2)), _
+    Array("NAME:PolylineXSection", "XSectionType:=", "None", "XSectionOrient:=", "Auto", "XSectionWidth:=", "0mil", _
+      "XSectionTopWidth:=", "0mil", "XSectionHeight:=", "0mil", "XSectionNumSegments:=", "0", "XSectionBendType:=", "Corner") _
+  ), _
+  Array("NAME:Attributes", "Name:=", "Seg_Line11", "Flags:=", "", "Color:=", "(255 0 100)", _
+    "Transparency:=", transparency, "PartCoordinateSystem:=", "Global", "MaterialValue:=", material, "SolveInside:=", false) _
+)
+
+' -------- Segment: Line12 (diagonal from Line10 end) --------
+Dim L12, x12_start, y12_start, x12_end, y12_end
+L12 = 35
+x12_start = x10
+y12_start = y10_end
+x12_end = x12_start + L12 * 0.7071
+y12_end = y12_start + L12 * 0.7071
+
+Call oEditor.CreatePolyline( _
+  Array("NAME:PolylineParameters", _
+    "IsPolylineCovered:=", true, "IsPolylineClosed:=", false, _
+    Array("NAME:PolylinePoints", _
+      Array("NAME:PLPoint", "X:=", CStr(x12_start) & "mil", "Y:=", CStr(y12_start) & "mil", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", CStr(x12_end) & "mil", "Y:=", CStr(y12_end) & "mil", "Z:=", "0mil") _
+    ), _
+    Array("NAME:PolylineSegments", Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 0, "NoOfPoints:=", 2)), _
+    Array("NAME:PolylineXSection", "XSectionType:=", "None", "XSectionOrient:=", "Auto", "XSectionWidth:=", "0mil", _
+      "XSectionTopWidth:=", "0mil", "XSectionHeight:=", "0mil", "XSectionNumSegments:=", "0", "XSectionBendType:=", "Corner") _
+  ), _
+  Array("NAME:Attributes", "Name:=", "Seg_Line12", "Flags:=", "", "Color:=", "(0 255 200)", _
+    "Transparency:=", transparency, "PartCoordinateSystem:=", "Global", "MaterialValue:=", material, "SolveInside:=", false) _
+)
