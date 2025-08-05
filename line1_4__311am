@@ -1,4 +1,4 @@
-' Reset base values
+' Dimensions
 Dim Wio, L1, L2, L3, L4
 Wio = 7.5
 L1 = 25.0
@@ -6,12 +6,11 @@ L2 = 15.0
 L3 = 8.0
 L4 = 12.0
 
-' Materials, attributes
 Dim material, transparency
 material = Chr(34) & "copper" & Chr(34)
 transparency = 0
 
-' Segment Wio (already good, included for completeness)
+' -------- Segment: Wio (vertical up from origin) --------
 Call oEditor.CreatePolyline( _
   Array("NAME:PolylineParameters", _
     "IsPolylineCovered:=", true, "IsPolylineClosed:=", false, _
@@ -27,7 +26,7 @@ Call oEditor.CreatePolyline( _
     "Transparency:=", transparency, "PartCoordinateSystem:=", "Global", "MaterialValue:=", material, "SolveInside:=", false) _
 )
 
-' Segment Line1 (from Wio top to right)
+' -------- Segment: Line1 (horizontal right from Wio top) --------
 Call oEditor.CreatePolyline( _
   Array("NAME:PolylineParameters", _
     "IsPolylineCovered:=", true, "IsPolylineClosed:=", false, _
@@ -43,13 +42,13 @@ Call oEditor.CreatePolyline( _
     "Transparency:=", transparency, "PartCoordinateSystem:=", "Global", "MaterialValue:=", material, "SolveInside:=", false) _
 )
 
-' Segment Line2: vertical down from base of Wio
+' -------- Segment: Line2 (horizontal right from Wio base) --------
 Call oEditor.CreatePolyline( _
   Array("NAME:PolylineParameters", _
     "IsPolylineCovered:=", true, "IsPolylineClosed:=", false, _
     Array("NAME:PolylinePoints", _
       Array("NAME:PLPoint", "X:=", "0mil", "Y:=", "0mil", "Z:=", "0mil"), _
-      Array("NAME:PLPoint", "X:=", "0mil", "Y:=", "-" & CStr(L2) & "mil", "Z:=", "0mil") _
+      Array("NAME:PLPoint", "X:=", CStr(L1) & "mil", "Y:=", "0mil", "Z:=", "0mil") _
     ), _
     Array("NAME:PolylineSegments", Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 0, "NoOfPoints:=", 2)), _
     Array("NAME:PolylineXSection", "XSectionType:=", "None", "XSectionOrient:=", "Auto", "XSectionWidth:=", "0mil", _
@@ -59,7 +58,7 @@ Call oEditor.CreatePolyline( _
     "Transparency:=", transparency, "PartCoordinateSystem:=", "Global", "MaterialValue:=", material, "SolveInside:=", false) _
 )
 
-' Segment Line4: from end of Line1, angled (45°)
+' -------- Segment: Line4 (diagonal up-right from Line1 end) --------
 Dim x4, y4
 x4 = L1 + L4 * 0.707
 y4 = Wio + L4 * 0.707
@@ -79,16 +78,16 @@ Call oEditor.CreatePolyline( _
     "Transparency:=", transparency, "PartCoordinateSystem:=", "Global", "MaterialValue:=", material, "SolveInside:=", false) _
 )
 
-' Segment Line3: from bottom of Line2 up at 45°
+' -------- Segment: Line3 (diagonal up-right from Line2 end) --------
 Dim x3, y3
-x3 = L3 * 0.707
-y3 = -L2 + L3 * 0.707
+x3 = L1 + L3 * 0.707
+y3 = L3 * 0.707
 
 Call oEditor.CreatePolyline( _
   Array("NAME:PolylineParameters", _
     "IsPolylineCovered:=", true, "IsPolylineClosed:=", false, _
     Array("NAME:PolylinePoints", _
-      Array("NAME:PLPoint", "X:=", "0mil", "Y:=", "-" & CStr(L2) & "mil", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", CStr(L1) & "mil", "Y:=", "0mil", "Z:=", "0mil"), _
       Array("NAME:PLPoint", "X:=", CStr(x3) & "mil", "Y:=", CStr(y3) & "mil", "Z:=", "0mil") _
     ), _
     Array("NAME:PolylineSegments", Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 0, "NoOfPoints:=", 2)), _
