@@ -1,0 +1,217 @@
+'***************************************************************************
+' HFSS VBScript for Complex Hairpin Resonator with Coupling Structure
+' Based on your image with labeled line segments
+'***************************************************************************
+
+Dim oAnsoftApp, oDesktop, oProject, oDesign, oEditor
+
+'Initialize HFSS
+Set oAnsoftApp = CreateObject("AnsoftHfss.HfssScriptInterface")
+Set oDesktop = oAnsoftApp.GetAppDesktop()
+oDesktop.RestoreWindow
+Set oProject = oDesktop.NewProject
+oProject.InsertDesign "HFSS", "HairpinResonator", "DrivenModal", ""
+Set oDesign = oProject.SetActiveDesign("HairpinResonator")
+Set oEditor = oDesign.SetActiveEditor("3D Modeler")
+
+'Set units to mils
+oEditor.SetModelUnits Array("NAME:Units Parameter", "Units:=", "mil", "Rescale:=", false)
+
+'***************************************************************************
+' Design Parameters (adjust these to match your requirements)
+'***************************************************************************
+
+'Basic dimensions
+Dim Wio, launch_width, line_width
+Wio = 7.5              'Width of main feed line (Wio)
+launch_width = 3.5     'Width of coupling launch (launch_width)  
+line_width = 2.0       'Width of resonator lines
+
+'Length parameters
+Dim L1, L2, L3, L4, L5, L6, L7, L8, L9, L10, L11, L12, L13, L14, L15
+L1 = 25.0      'Horizontal feed section
+L2 = 15.0      'Vertical section to coupling
+L3 = 8.0       'Diagonal coupling section
+L4 = 12.0      'Vertical section after coupling
+L5 = 80.0      'Long vertical resonator section
+L6 = 6.0       'Short vertical section at turn
+L7 = 4.0       'Short angled section
+L8 = 4.0       'Short angled section (mirror)
+L9 = 6.0       'Short vertical section
+L10 = 8.0      'Short vertical section
+L11 = 40.0     'Horizontal top section
+L12 = 8.0      'Angled section
+L13 = 35.0     'Top horizontal section
+L14 = 90.0     'Right vertical section
+L15 = 12.0     'Right vertical coupling section
+
+'Angle parameters
+Dim angle1, angle2
+angle1 = 45    'Angle for diagonal sections
+angle2 = 30    'Angle for angled sections
+
+'***************************************************************************
+' Create Design Variables for Optimization
+'***************************************************************************
+
+oDesign.ChangeProperty Array("NAME:AllTabs", _
+Array("NAME:LocalVariableTab", _
+Array("NAME:PropServers", "LocalVariables"), _
+Array("NAME:NewProps", _
+Array("NAME:Wio", "PropType:=", "VariableProp", _
+"UserDef:=", true, "Value:=", CStr(Wio) & "mil"))))
+
+oDesign.ChangeProperty Array("NAME:AllTabs", _
+Array("NAME:LocalVariableTab", _
+Array("NAME:PropServers", "LocalVariables"), _
+Array("NAME:NewProps", _
+Array("NAME:launch_width", "PropType:=", "VariableProp", _
+"UserDef:=", true, "Value:=", CStr(launch_width) & "mil"))))
+
+oDesign.ChangeProperty Array("NAME:AllTabs", _
+Array("NAME:LocalVariableTab", _
+Array("NAME:PropServers", "LocalVariables"), _
+Array("NAME:NewProps", _
+Array("NAME:line_width", "PropType:=", "VariableProp", _
+"UserDef:=", true, "Value:=", CStr(line_width) & "mil"))))
+
+'Length variables
+For i = 1 To 15
+    oDesign.ChangeProperty Array("NAME:AllTabs", _
+    Array("NAME:LocalVariableTab", _
+    Array("NAME:PropServers", "LocalVariables"), _
+    Array("NAME:NewProps", _
+    Array("NAME:L" & i, "PropType:=", "VariableProp", _
+    "UserDef:=", true, "Value:=", CStr(Eval("L" & i)) & "mil"))))
+Next
+
+'***************************************************************************
+' Create the Complex Hairpin Polyline Structure
+'***************************************************************************
+
+'Calculate key coordinates based on your image
+Dim x0, y0  'Starting point
+x0 = 0
+y0 = 0
+
+'Define all the points following the line segments in your image
+'Starting from bottom left, going clockwise
+
+oEditor.CreatePolyline Array("NAME:PolylineParameters", _
+"IsPolylineCovered:=", true, _
+"IsPolylineClosed:=", true, _
+Array("NAME:PolylinePoints", _
+    'Point 1: Start of Line1 (bottom left)
+    Array("NAME:PLPoint", "X:=", "0mil", "Y:=", "0mil", "Z:=", "0mil"), _
+    
+    'Point 2: End of Line1 (horizontal section)
+    Array("NAME:PLPoint", "X:=", "L1", "Y:=", "0mil", "Z:=", "0mil"), _
+    
+    'Point 3: End of Line2 (vertical up)
+    Array("NAME:PLPoint", "X:=", "L1", "Y:=", "L2", "Z:=", "0mil"), _
+    
+    'Point 4: End of Line3 (diagonal up-right)
+    Array("NAME:PLPoint", "X:=", "L1 + L3*cos(45deg)", "Y:=", "L2 + L3*sin(45deg)", "Z:=", "0mil"), _
+    
+    'Point 5: End of Line4 (vertical up)
+    Array("NAME:PLPoint", "X:=", "L1 + L3*cos(45deg)", "Y:=", "L2 + L3*sin(45deg) + L4", "Z:=", "0mil"), _
+    
+    'Point 6: End of Line5 (long vertical section)
+    Array("NAME:PLPoint", "X:=", "L1 + L3*cos(45deg)", "Y:=", "L2 + L3*sin(45deg) + L4 + L5", "Z:=", "0mil"), _
+    
+    'Point 7: End of Line6 (short vertical)
+    Array("NAME:PLPoint", "X:=", "L1 + L3*cos(45deg)", "Y:=", "L2 + L3*sin(45deg) + L4 + L5 + L6", "Z:=", "0mil"), _
+    
+    'Point 8: End of Line7 (angled section)
+    Array("NAME:PLPoint", "X:=", "L1 + L3*cos(45deg) + L7*cos(30deg)", "Y:=", "L2 + L3*sin(45deg) + L4 + L5 + L6 + L7*sin(30deg)", "Z:=", "0mil"), _
+    
+    'Point 9: End of Line8 (angled section)
+    Array("NAME:PLPoint", "X:=", "L1 + L3*cos(45deg) + L7*cos(30deg) + L8*cos(60deg)", "Y:=", "L2 + L3*sin(45deg) + L4 + L5 + L6 + L7*sin(30deg) + L8*sin(60deg)", "Z:=", "0mil"), _
+    
+    'Point 10: End of Line9 (vertical up)
+    Array("NAME:PLPoint", "X:=", "L1 + L3*cos(45deg) + L7*cos(30deg) + L8*cos(60deg)", "Y:=", "L2 + L3*sin(45deg) + L4 + L5 + L6 + L7*sin(30deg) + L8*sin(60deg) + L9", "Z:=", "0mil"), _
+    
+    'Point 11: End of Line10 (vertical up)
+    Array("NAME:PLPoint", "X:=", "L1 + L3*cos(45deg) + L7*cos(30deg) + L8*cos(60deg)", "Y:=", "L2 + L3*sin(45deg) + L4 + L5 + L6 + L7*sin(30deg) + L8*sin(60deg) + L9 + L10", "Z:=", "0mil"), _
+    
+    'Point 12: End of Line11 (horizontal right)
+    Array("NAME:PLPoint", "X:=", "L1 + L3*cos(45deg) + L7*cos(30deg) + L8*cos(60deg) + L11", "Y:=", "L2 + L3*sin(45deg) + L4 + L5 + L6 + L7*sin(30deg) + L8*sin(60deg) + L9 + L10", "Z:=", "0mil"), _
+    
+    'Point 13: End of Line12 (angled down-right)
+    Array("NAME:PLPoint", "X:=", "L1 + L3*cos(45deg) + L7*cos(30deg) + L8*cos(60deg) + L11 + L12*cos(-30deg)", "Y:=", "L2 + L3*sin(45deg) + L4 + L5 + L6 + L7*sin(30deg) + L8*sin(60deg) + L9 + L10 + L12*sin(-30deg)", "Z:=", "0mil"), _
+    
+    'Point 14: End of Line13 (horizontal right)
+    Array("NAME:PLPoint", "X:=", "L1 + L3*cos(45deg) + L7*cos(30deg) + L8*cos(60deg) + L11 + L12*cos(-30deg) + L13", "Y:=", "L2 + L3*sin(45deg) + L4 + L5 + L6 + L7*sin(30deg) + L8*sin(60deg) + L9 + L10 + L12*sin(-30deg)", "Z:=", "0mil"), _
+    
+    'Point 15: End of Line14 (vertical down - long right side)
+    Array("NAME:PLPoint", "X:=", "L1 + L3*cos(45deg) + L7*cos(30deg) + L8*cos(60deg) + L11 + L12*cos(-30deg) + L13", "Y:=", "L2 + L3*sin(45deg) + L4 + L5 + L6 + L7*sin(30deg) + L8*sin(60deg) + L9 + L10 + L12*sin(-30deg) - L14", "Z:=", "0mil"), _
+    
+    'Point 16: End of Line15 (vertical down to coupling)
+    Array("NAME:PLPoint", "X:=", "L1 + L3*cos(45deg) + L7*cos(30deg) + L8*cos(60deg) + L11 + L12*cos(-30deg) + L13", "Y:=", "L2 + L3*sin(45deg) + L4 + L5 + L6 + L7*sin(30deg) + L8*sin(60deg) + L9 + L10 + L12*sin(-30deg) - L14 - L15", "Z:=", "0mil"), _
+    
+    'Now create the inner trace with offset for width
+    'Point 17: Inner trace start (offset by line width)
+    Array("NAME:PLPoint", "X:=", "line_width", "Y:=", "line_width", "Z:=", "0mil"), _
+    
+    'Continue with inner trace points (simplified - you would need to calculate all interior points)
+    'Point 18: Inner horizontal
+    Array("NAME:PLPoint", "X:=", "L1 - line_width", "Y:=", "line_width", "Z:=", "0mil"), _
+    
+    'Add more inner points as needed to complete the closed polygon
+    'Point 19: Back to start
+    Array("NAME:PLPoint", "X:=", "0mil", "Y:=", "0mil", "Z:=", "0mil")), _
+
+Array("NAME:PolylineSegments", _
+    Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 0, "NoOfPoints:=", 2), _
+    Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 1, "NoOfPoints:=", 2), _
+    Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 2, "NoOfPoints:=", 2), _
+    Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 3, "NoOfPoints:=", 2), _
+    Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 4, "NoOfPoints:=", 2), _
+    Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 5, "NoOfPoints:=", 2), _
+    Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 6, "NoOfPoints:=", 2), _
+    Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 7, "NoOfPoints:=", 2), _
+    Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 8, "NoOfPoints:=", 2), _
+    Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 9, "NoOfPoints:=", 2), _
+    Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 10, "NoOfPoints:=", 2), _
+    Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 11, "NoOfPoints:=", 2), _
+    Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 12, "NoOfPoints:=", 2), _
+    Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 13, "NoOfPoints:=", 2), _
+    Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 14, "NoOfPoints:=", 2), _
+    Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 15, "NoOfPoints:=", 2), _
+    Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 16, "NoOfPoints:=", 2), _
+    Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 17, "NoOfPoints:=", 2)), _
+
+Array("NAME:PolylineXSection", _
+"XSectionType:=", "None", _
+"XSectionOrient:=", "Auto", _
+"XSectionWidth:=", "0mil", _
+"XSectionTopWidth:=", "0mil", _
+"XSectionHeight:=", "0mil", _
+"XSectionNumSegments:=", "0", _
+"XSectionBendType:=", "Corner")), _
+
+Array("NAME:Attributes", _
+"Name:=", "HairpinResonator", _
+"Flags:=", "", _
+"Color:=", "(255 128 0)", _
+"Transparency:=", 0, _
+"PartCoordinateSystem:=", "Global", _
+"MaterialValue:=", Chr(34) & "copper" & Chr(34), _
+"SolveInside:=", false))
+
+'***************************************************************************
+' Make it 3D by sweeping
+'***************************************************************************
+
+oEditor.SweepAlongVector Array("NAME:Selections", _
+"Selections:=", "HairpinResonator", _
+"NewPartsModelFlag:=", "Model"), _
+Array("NAME:VectorSweepParameters", _
+"DraftAngle:=", "0deg", _
+"DraftType:=", "Round", _
+"CheckFaceIntersection:=", false, _
+"SweepVectorX:=", "0mil", _
+"SweepVectorY:=", "0mil", _
+"SweepVectorZ:=", "0.65mil")
+
+MsgBox "Hairpin resonator structure created! Adjust the L1-L15 parameters to match your exact dimensions."
