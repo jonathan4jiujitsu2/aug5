@@ -1,0 +1,65 @@
+Call oEditor.CreatePolyline( _
+  Array("NAME:PolylineParameters", _
+    "IsPolylineCovered:=", true, _
+    "IsPolylineClosed:=", true, _
+    Array("NAME:PolylinePoints", _
+      Array("NAME:PLPoint", "X:=", "0mil", "Y:=", "0mil", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", "L1", "Y:=", "0mil", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", "L1", "Y:=", "L2", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", "L1+L3*0.707", "Y:=", "L2+L3*0.707", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", "L1+L3*0.707", "Y:=", "L2+L3*0.707+L4", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", "L1+L3*0.707", "Y:=", "L2+L3*0.707+L4+L5", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", "L1+L3*0.707", "Y:=", "L2+L3*0.707+L4+L5+L6", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", "L1+L3*0.707+L7*0.866", "Y:=", "L2+L3*0.707+L4+L5+L6+L7*0.5", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", "L1+L3*0.707+L7*0.866+L8*0.5", "Y:=", "L2+L3*0.707+L4+L5+L6+L7*0.5+L8*0.866", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", "L1+L3*0.707+L7*0.866+L8*0.5", "Y:=", "L2+L3*0.707+L4+L5+L6+L7*0.5+L8*0.866+L9", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", "L1+L3*0.707+L7*0.866+L8*0.5", "Y:=", "L2+L3*0.707+L4+L5+L6+L7*0.5+L8*0.866+L9+L10", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", "L1+L3*0.707+L7*0.866+L8*0.5+L11", "Y:=", "L2+L3*0.707+L4+L5+L6+L7*0.5+L8*0.866+L9+L10", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", "L1+L3*0.707+L7*0.866+L8*0.5+L11+L12*0.866", "Y:=", "L2+L3*0.707+L4+L5+L6+L7*0.5+L8*0.866+L9+L10-L12*0.5", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", "L1+L3*0.707+L7*0.866+L8*0.5+L11+L12*0.866+L13", "Y:=", "L2+L3*0.707+L4+L5+L6+L7*0.5+L8*0.866+L9+L10-L12*0.5", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", "L1+L3*0.707+L7*0.866+L8*0.5+L11+L12*0.866+L13", "Y:=", "L2+L3*0.707+L4+L5+L6+L7*0.5+L8*0.866+L9+L10-L12*0.5-L14", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", "L1+L3*0.707+L7*0.866+L8*0.5+L11+L12*0.866+L13", "Y:=", "L2+L3*0.707+L4+L5+L6+L7*0.5+L8*0.866+L9+L10-L12*0.5-L14-L15", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", "line_width", "Y:=", "line_width", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", "L1-line_width", "Y:=", "line_width", "Z:=", "0mil"), _
+      Array("NAME:PLPoint", "X:=", "0mil", "Y:=", "0mil", "Z:=", "0mil") _
+    ), _
+    Array("NAME:PolylineSegments", _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 0, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 1, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 2, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 3, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 4, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 5, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 6, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 7, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 8, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 9, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 10, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 11, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 12, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 13, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 14, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 15, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 16, "NoOfPoints:=", 2), _
+      Array("NAME:PLSegment", "SegmentType:=", "Line", "StartIndex:=", 17, "NoOfPoints:=", 2) _
+    ), _
+    Array("NAME:PolylineXSection", _
+      "XSectionType:=", "None", _
+      "XSectionOrient:=", "Auto", _
+      "XSectionWidth:=", "0mil", _
+      "XSectionTopWidth:=", "0mil", _
+      "XSectionHeight:=", "0mil", _
+      "XSectionNumSegments:=", "0", _
+      "XSectionBendType:=", "Corner" _
+    ) _
+  ), _
+  Array("NAME:Attributes", _
+    "Name:=", "HairpinResonator", _
+    "Flags:=", "", _
+    "Color:=", "(255 128 0)", _
+    "Transparency:=", 0, _
+    "PartCoordinateSystem:=", "Global", _
+    "MaterialValue:=", Chr(34) & "copper" & Chr(34), _
+    "SolveInside:=", false _
+  ) _
+)
